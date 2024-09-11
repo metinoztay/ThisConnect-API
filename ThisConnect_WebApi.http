@@ -1,0 +1,6 @@
+@ThisConnect_WebApi_HostAddress = http://localhost:5167
+
+GET {{ThisConnect_WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
