@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ThisConnect_WebApi.Models;
+namespace ThisConnect_API.Models;
 
 public partial class User
 {
@@ -11,7 +11,7 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public string Tittle { get; set; } = null!;
+    public string Title { get; set; } = null!;
 
     public string Name { get; set; } = null!;
 

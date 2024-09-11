@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ThisConnect_WebApi.Models;
+namespace ThisConnect_API.Models;
 
 public partial class Otp
 {

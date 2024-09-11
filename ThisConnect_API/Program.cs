@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection.Metadata;
-//using ThisConnect_WebApi.Hubs;
-using ThisConnect_WebApi.Models;
+using ThisConnect_API.Models;
+using ThisConnect_API.Hubs;
 
 
 
@@ -49,7 +49,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-//app.MapHub<ChatHub>("/chathub");
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();
 

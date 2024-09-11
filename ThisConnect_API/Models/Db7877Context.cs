@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace ThisConnect_WebApi.Models;
+namespace ThisConnect_API.Models;
 
 public partial class Db7877Context : DbContext
 {
@@ -280,10 +280,10 @@ public partial class Db7877Context : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("SURNAME");
-            entity.Property(e => e.Tittle)
+            entity.Property(e => e.Title)
                 .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasColumnName("TITTLE");
+                .HasColumnName("TITLE");
         });
 
         OnModelCreatingPartial(modelBuilder);
