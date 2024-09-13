@@ -45,16 +45,8 @@ namespace ThisConnect_API.Controllers
         [HttpGet("GetQRsByUserID/{userid}")]
         public async Task<ActionResult<IEnumerable<Qr>>> GetQRsByUserID(string userid)
         {
-            var user = await _context.Users
-                .Include(u => u.Qrs)                
-                .FirstOrDefaultAsync(u => u.UserId == userid);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user.Qrs);
+            List<Qr> qrList = _context.Qrs.Where(qr => qr.UserId == userid).OrderBy(qr => qr.CreatedAt).ToList();
+            return Ok(qrList);
         }
 
         [HttpPut("UpdateQR/{qrid}")]
