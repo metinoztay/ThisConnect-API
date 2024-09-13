@@ -5,7 +5,7 @@ using ThisConnect_API.Models;
 using ThisConnect_API.DTOs;
 
 
-namespace ThisConnect_WebApi.Controllers
+namespace ThisConnect_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -49,8 +49,8 @@ namespace ThisConnect_WebApi.Controllers
                 tempMessage.RecieverUserId = message.RecieverUserId;
                 tempMessage.AttachmentId = message.AttachmentId;
                 tempMessage.Content = message.Content;
-                tempMessage.CreatedAt = message.CreatedAt;
-                tempMessage.ReadedAt = message.ReadedAt;
+                tempMessage.CreatedAt = message.CreatedAt.ToString();
+                tempMessage.ReadedAt = message.ReadedAt.ToString();
                 tempMessage.MessageId = message.MessageId;
                 messages.Add(tempMessage);
 
@@ -81,8 +81,8 @@ namespace ThisConnect_WebApi.Controllers
                 tempMessage.RecieverUserId = message.RecieverUserId;
                 tempMessage.AttachmentId = message.AttachmentId;
                 tempMessage.Content = message.Content;
-                tempMessage.CreatedAt = message.CreatedAt;
-                tempMessage.ReadedAt = message.ReadedAt;
+                tempMessage.CreatedAt = message.CreatedAt.ToString();
+                tempMessage.ReadedAt = message.ReadedAt.ToString();
                 tempMessage.MessageId = message.MessageId;
 
             

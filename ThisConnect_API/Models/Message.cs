@@ -17,9 +17,9 @@ public partial class Message
 
     public string Content { get; set; } = null!;
 
-    public string CreatedAt { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
 
-    public string? ReadedAt { get; set; }
+    public DateTime? ReadedAt { get; set; }
 
     public virtual Attachment? Attachment { get; set; }
 

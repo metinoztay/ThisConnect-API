@@ -21,6 +21,8 @@ public partial class User
 
     public string LastSeenAt { get; set; } = null!;
 
+    public DateTime CreatedAt { get; set; }
+
     public virtual ICollection<ChatRoom> ChatRoomParticipant1s { get; set; } = new List<ChatRoom>();
 
     public virtual ICollection<ChatRoom> ChatRoomParticipant2s { get; set; } = new List<ChatRoom>();

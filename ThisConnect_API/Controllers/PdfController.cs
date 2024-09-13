@@ -4,7 +4,7 @@ using PdfSharpCore;
 using PdfSharpCore.Pdf;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 
-namespace ThisConnect_WebApi.Controllers
+namespace ThisConnect_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

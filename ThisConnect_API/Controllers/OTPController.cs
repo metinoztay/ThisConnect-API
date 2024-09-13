@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ThisConnect_API.Models;
 using ThisConnect_API.DTOs;
 
-namespace ThisConnect_WebApi.Controllers
+namespace ThisConnect_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -48,8 +48,6 @@ namespace ThisConnect_WebApi.Controllers
             {
                 Otp? Otp = _context.Otps.FirstOrDefault(o => o.Phone == phone);
 
-               
-
                 if (Otp == null)
                 {
                     Otp = new Otp();
@@ -65,10 +63,7 @@ namespace ThisConnect_WebApi.Controllers
                     _context.Otps.Update(Otp);
                 }
 
-                await _context.SaveChangesAsync();           
-                
-
-
+                await _context.SaveChangesAsync();       
             }
             catch (Exception ex)
             {

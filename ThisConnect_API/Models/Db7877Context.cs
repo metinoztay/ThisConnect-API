@@ -112,6 +112,7 @@ public partial class Db7877Context : DbContext
             entity.Property(e => e.MessageId)
                 .HasMaxLength(36)
                 .IsUnicode(false)
+                .HasDefaultValueSql("(CONVERT([char](36),newid()))")
                 .IsFixedLength()
                 .HasColumnName("MESSAGE_ID");
             entity.Property(e => e.AttachmentId)
@@ -129,14 +130,10 @@ public partial class Db7877Context : DbContext
                 .IsUnicode(false)
                 .HasColumnName("CONTENT");
             entity.Property(e => e.CreatedAt)
-                .HasMaxLength(19)
-                .IsUnicode(false)
-                .IsFixedLength()
+                .HasColumnType("datetime")
                 .HasColumnName("CREATED_AT");
             entity.Property(e => e.ReadedAt)
-                .HasMaxLength(19)
-                .IsUnicode(false)
-                .IsFixedLength()
+                .HasColumnType("datetime")
                 .HasColumnName("READED_AT");
             entity.Property(e => e.RecieverUserId)
                 .HasMaxLength(36)
@@ -258,6 +255,9 @@ public partial class Db7877Context : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("AVATAR_URL");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("CREATED_AT");
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .IsUnicode(false)

@@ -34,32 +34,48 @@ namespace ThisConnect_API.Hubs
         public async Task SendMessage(MessageDTO tempmessage)
         {
             await Clients.Group(tempmessage.ChatRoomId).SendAsync("ReceiveMessage", tempmessage);
-
-            Message message = new Message();
-            message.ChatRoomId = tempmessage.ChatRoomId;
-            message.SenderUserId = tempmessage.SenderUserId;
-            message.RecieverUserId = tempmessage.RecieverUserId;
-            message.AttachmentId = null;
-            message.Content = tempmessage.Content;
-            message.CreatedAt = DateTime.Now.ToString(); 
-            message.ReadedAt = null;
-
             try
             {
-                await _context.Messages.AddAsync(message);
-                await _context.SaveChangesAsync(); 
-                ChatRoom? chatRoom = new ChatRoom();
-                chatRoom = _context.ChatRooms.FirstOrDefault(c => c.ChatRoomId == message.ChatRoomId);
-                chatRoom.LastMessageId = message.MessageId;
-                _context.ChatRooms.Update(chatRoom);
-                _context.SaveChanges();
+                
 
+                Message message = new Message
+                {
+                    ChatRoomId = tempmessage.ChatRoomId,
+                    SenderUserId = tempmessage.SenderUserId,
+                    RecieverUserId = tempmessage.RecieverUserId,
+                    AttachmentId = null,
+                    Content = tempmessage.Content,
+                    ReadedAt = null
+                };
+
+                DateTime utcNow = DateTime.UtcNow;
+                TimeZoneInfo turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+                DateTime turkeyTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, turkeyTimeZone);
+                string formattedTime = turkeyTime.ToString("dd.MM.yyyy HH:mm:ss");
+                message.CreatedAt = turkeyTime; // Eğer `DateTime` olarak saklıyorsan
+
+                await _context.Messages.AddAsync(message);
+                await _context.SaveChangesAsync();
+
+                ChatRoom? chatRoom = _context.ChatRooms.FirstOrDefault(c => c.ChatRoomId == message.ChatRoomId);
+                if (chatRoom != null)
+                {
+                    chatRoom.LastMessageId = message.MessageId;
+                    _context.ChatRooms.Update(chatRoom);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    // Hata mesajı istemciye gönderiliyor
+                    await Clients.Caller.SendAsync("ErrorMessage", "Chat room not found.");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Veritabanı mesaj ekleme işlemi sırasında hata oluştu: {ex.Message}");
-                throw; 
+                // İstemciye hata mesajı gönder
+                await Clients.Caller.SendAsync("ErrorMessage", $"An error occurred: {ex}");
             }
         }
+
     }
 }

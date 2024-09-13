@@ -5,7 +5,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using ThisConnect_API.Models;
 using ThisConnect_API.DTOs;
 
-namespace ThisConnect_WebApi.Controllers
+namespace ThisConnect_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -31,12 +31,17 @@ namespace ThisConnect_WebApi.Controllers
                 return Conflict("Chat room already exists for these participants.");
             }
 
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+            DateTime turkeyTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, turkeyTimeZone);
+            string formattedTime = turkeyTime.ToString("dd.MM.yyyy HH:mm:ss");
+
             ChatRoom tblChatRoom = new ChatRoom
             {
                 Participant1Id = chatRoom.Participant1Id,
                 Participant2Id = chatRoom.Participant2Id,
                 LastMessageId = null,
-                CreatedAt = DateTime.Now.ToString()
+                CreatedAt = formattedTime
             };
 
             await _context.ChatRooms.AddAsync(tblChatRoom);

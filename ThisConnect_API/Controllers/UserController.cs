@@ -5,7 +5,7 @@ using System;
 using ThisConnect_API.DTOs;
 using ThisConnect_API.Models;
 
-namespace ThisConnect_WebApi.Controllers
+namespace ThisConnect_API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
@@ -37,7 +37,7 @@ namespace ThisConnect_WebApi.Controllers
 
 		
 		[HttpPost("CreateUser")]
-		public async Task<ActionResult<User>> CreateUser([FromBody] UserDTO temp)
+		public async Task<IActionResult> CreateUser([FromBody] UserDTO temp)
 		{
 			if (temp == null)
 			{
@@ -51,12 +51,24 @@ namespace ThisConnect_WebApi.Controllers
 			user.Name = temp.Name;
 			user.Surname = temp.Surname;
 			user.AvatarUrl = temp.AvatarUrl;
-			user.LastSeenAt = DateTime.Now.ToString();
-			
-			await _context.Users.AddAsync(user);
-			await _context.SaveChangesAsync();
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+            DateTime turkeyTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, turkeyTimeZone);
+            string formattedTime = turkeyTime.ToString("dd.MM.yyyy HH:mm:ss");
+			user.CreatedAt = DateTime.UtcNow;
+            user.LastSeenAt = formattedTime;
 
-			return Ok(user);
+            try
+            {
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Internal server error: {ex.Message} + + {ex.ToString()}");
+            }
+            return Ok(user);
 		}
 
 		[HttpPut("UpdateUser/{id}")]

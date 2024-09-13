@@ -17,10 +17,6 @@
 
         public string? AvatarUrl { get; set; }
 
-        public string CreatedAt { get; set; } = null!;
-
-        public string? UpdatedAt { get; set; }
-
         public string LastSeenAt { get; set; } = null!;
     }
 }
