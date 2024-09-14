@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.Reflection.Metadata;
 using ThisConnect_API.Models;
 using ThisConnect_API.Hubs;
+using Microsoft.Extensions.FileProviders;
 
 
 
@@ -46,6 +47,21 @@ var app = builder.Build();
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
+
+var rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Photos");
+var userProfilePhotosPath = Path.Combine(rootFolderPath, "UserProfilePhotos");
+
+if (!Directory.Exists(userProfilePhotosPath))
+{
+    Directory.CreateDirectory(userProfilePhotosPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Photos", "UserProfilePhotos")),
+    RequestPath = "/Photos/UserProfilePhotos"
+});
+
 
 app.UseAuthorization();
 

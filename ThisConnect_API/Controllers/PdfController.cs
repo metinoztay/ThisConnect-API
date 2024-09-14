@@ -23,7 +23,7 @@ namespace ThisConnect_API.Controllers
         {
             var document = new PdfDocument();
 
-            // URL to download the app
+            
             //string appDownloadQrCodeUrl = "data:image/png;base64," + Convert.ToBase64String(System.IO.File.ReadAllBytes("C:\\Projects\\ThisConnect-API\\ThisConnect_API\\Assets/Images/app_download_qr.png"));
             string appDownloadQrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + qrId;
             // URL for the QR code to send a message
@@ -45,7 +45,7 @@ namespace ThisConnect_API.Controllers
 
             Qr qr = _context.Qrs.Find(qrId);
             User user = _context.Users.Find(qr.UserId);
-            string fileName = user.Name + " " + user.Surname + " - " + qr.Title + ".pdf";
+            string fileName = user.Name + " " + user.Surname + " - " + qr.Title +" QR Code"+ ".pdf";
             byte[] response = null;
             using (MemoryStream ms = new MemoryStream())
             {

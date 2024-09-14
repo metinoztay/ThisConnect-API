@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Photos\UserProfilePhotos\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
