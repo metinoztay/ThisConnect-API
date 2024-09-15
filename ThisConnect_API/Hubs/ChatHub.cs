@@ -36,14 +36,13 @@ namespace ThisConnect_API.Hubs
             await Clients.Group(tempmessage.ChatRoomId).SendAsync("ReceiveMessage", tempmessage);
             try
             {
-                
 
                 Message message = new Message
                 {
                     ChatRoomId = tempmessage.ChatRoomId,
                     SenderUserId = tempmessage.SenderUserId,
                     RecieverUserId = tempmessage.RecieverUserId,
-                    AttachmentId = null,
+                    AttachmentId = tempmessage.AttachmentId,
                     Content = tempmessage.Content,
                     ReadedAt = null
                 };

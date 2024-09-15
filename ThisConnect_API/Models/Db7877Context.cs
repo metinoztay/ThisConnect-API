@@ -45,14 +45,18 @@ public partial class Db7877Context : DbContext
                 .HasDefaultValueSql("(CONVERT([char](36),newid()))")
                 .IsFixedLength()
                 .HasColumnName("ATTACHMENT_ID");
-            entity.Property(e => e.AttachmentUrl)
-                .HasMaxLength(255)
+            entity.Property(e => e.FileName)
+                .HasMaxLength(100)
                 .IsUnicode(false)
-                .HasColumnName("ATTACHMENT_URL");
-            entity.Property(e => e.Type)
+                .HasColumnName("FILE_NAME");
+            entity.Property(e => e.FileType)
                 .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasColumnName("TYPE");
+                .HasColumnName("FILE_TYPE");
+            entity.Property(e => e.FileUrl)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("FILE_URL");
         });
 
         modelBuilder.Entity<ChatRoom>(entity =>

@@ -50,6 +50,8 @@ app.UseHttpsRedirection();
 
 var rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Photos");
 var userProfilePhotosPath = Path.Combine(rootFolderPath, "UserProfilePhotos");
+var rootFilesFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+var userUploadedFilesPath = Path.Combine(rootFilesFolderPath, "UserFiles");
 
 if (!Directory.Exists(userProfilePhotosPath))
 {
@@ -60,6 +62,17 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Photos", "UserProfilePhotos")),
     RequestPath = "/Photos/UserProfilePhotos"
+});
+
+if (!Directory.Exists(rootFilesFolderPath))
+{
+    Directory.CreateDirectory(userUploadedFilesPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles", "UserFiles")),
+    RequestPath = "/UploadedFiles/UserFiles"
 });
 
 

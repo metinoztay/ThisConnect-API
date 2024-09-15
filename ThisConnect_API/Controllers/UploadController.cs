@@ -73,5 +73,73 @@ namespace ThisConnect_API.Controllers
             return Ok(new { fileUrl });
         }
         #endregion
+
+        
+        #region User File Upload
+        [HttpPost("UploadFile/{userId}")]
+        public async Task<IActionResult> UploadFile(string userId, [FromForm] IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded");
+
+            // Kullanıcı klasör yolu
+            var userFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles", "UserFiles");
+
+            // Kullanıcı klasörü yoksa oluştur
+            if (!Directory.Exists(userFolderPath))
+            {
+                Directory.CreateDirectory(userFolderPath);
+            }
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return NotFound("User not found");
+
+            string extension = Path.GetExtension(file.FileName);
+            string originalFileName = Path.GetFileNameWithoutExtension(file.FileName);
+
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+            DateTime turkeyTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, turkeyTimeZone);
+
+            string timeStamp = turkeyTime.ToString("yyyyMMddHHmmssfff"); // Zaman damgası
+            string uniqueFileName = $"{originalFileName}_{timeStamp}{extension}";
+
+            var filePath = Path.Combine(userFolderPath, uniqueFileName);
+
+            var fileUrl = $"{Request.Scheme}://{Request.Host}/UploadedFiles/UserFiles/{uniqueFileName}";
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+            
+            Attachment attachment = new Attachment
+            {
+                FileType = file.ContentType,
+                FileUrl = fileUrl,
+                FileName = file.FileName,
+            };
+            _context.Attachments.Add(attachment);
+            await _context.SaveChangesAsync();
+            
+            return Ok(attachment);
+        }
+        #endregion
+
+        
+
+        [HttpGet("GetAttachmentById/{attachmentId}")]
+        public async Task<ActionResult<IEnumerable<Qr>>> GetAttachmentById(string attachmentId)
+        {
+            var attachment = await _context.Attachments
+                .FirstOrDefaultAsync(m => m.AttachmentId == attachmentId);
+            if (attachment == null)
+            {
+                return NotFound();
+            }
+
+            return attachment == null ? NotFound() : Ok(attachment);
+        }
     }
 }
