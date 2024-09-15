@@ -12,11 +12,13 @@ namespace ThisConnect_API.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly Db7877Context _context;
+        private readonly IWebHostEnvironment _env;
 
-		public UserController(Db7877Context context)
+        public UserController(Db7877Context context, IWebHostEnvironment env)
 		{
-			_context = context;
-		}
+            _context = context;
+            _env = env;
+        }
 
 		[HttpGet("GetAllUsers")]
 		public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
@@ -50,7 +52,7 @@ namespace ThisConnect_API.Controllers
 			user.Title = temp.Title;
 			user.Name = temp.Name;
 			user.Surname = temp.Surname;
-			user.AvatarUrl = temp.AvatarUrl;
+			user.AvatarUrl = $"{Request.Scheme}://{Request.Host}/Photos/UserProfilePhotos/blank_profile_photo.jpg";
             DateTime utcNow = DateTime.UtcNow;
             TimeZoneInfo turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
             DateTime turkeyTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, turkeyTimeZone);
