@@ -18,6 +18,14 @@ namespace ThisConnect_API.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, chatRoomId);            
         }
 
+        public async Task JoinMessageListListener(string userId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, userId);
+        }
+        public async Task LeaveMessageListListener(string userId)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, userId);
+        }
 
         public async Task LeaveRoom(string chatRoomId)
         {
@@ -74,7 +82,11 @@ namespace ThisConnect_API.Hubs
                 // İstemciye hata mesajı gönder
                 await Clients.Caller.SendAsync("ErrorMessage", $"An error occurred: {ex}");
             }
+
+            await Clients.Group(tempmessage.RecieverUserId).SendAsync("FetchMessagesList", true);
         }
+
+        
 
     }
 }
